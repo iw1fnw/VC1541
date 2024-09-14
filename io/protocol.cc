@@ -8,8 +8,8 @@
  */
 
 #include <ctype.h>
-#include <iostream.h>
-#include <iomanip.h>
+#include <iostream>
+#include <iomanip>
 #include <setjmp.h>
 
 #ifdef MSDOS
@@ -17,7 +17,7 @@
 #include <dos.h>
 #endif /* MSDOS */
 #ifdef LINUX
-#include <asm/io.h>
+#include <sys/io.h>
 #define inportb(port) inb(port)
 #define outportb(port,val) outb(val,port)
 #endif
@@ -71,7 +71,7 @@ void IDLE(void)
 #endif /* MSDOS */
 
 #ifdef LINUX
-void DPRINT(void * /* s */)
+void DPRINT(const void * /* s */)
 {
 }
 
@@ -411,7 +411,7 @@ void Protocol::sendFile(File *file)
 		c1 = (byte_t)c2;
 		c2 = file->getc();
 		if (c2 == EOF) {
-			if ((c % 8) != 0) debug->form("\n");
+			if ((c % 8) != 0) *debug << endl;
 			DPRINT("-");
 			DPRINT("E");
 			DPRINT("O");
@@ -424,8 +424,11 @@ void Protocol::sendFile(File *file)
 			if (_io->_timeout) return;
 		}
 		if ((b++ % 254) == 0) {
-                	c++;
-			debug->form("[%3d]%c", c, ((c % 8) == 0) ? '\n' : ' ');
+			c++;
+			if ((c % 8) == 0)
+				*debug << "[" << c << "]" << endl;
+			else
+				*debug << "[" << c << "] ";
 		}
 	}
 }
@@ -437,16 +440,16 @@ void Protocol::receiveFile(Device *dev, char *name)
 	byte_t b;
 	File *f;
 
-	debug->form("Protocol::receiveFile() -> %s\n", name);
+	*debug << "Protocol::receiveFile() -> " << name << endl;
 
 	f = dev->open_write(name);
 	if (f == NULL) {
-		debug->form("Protocol::receiveFile(): write not supported!\n");
+		*debug << "Protocol::receiveFile(): write not supported!" << endl;
 		return;
 	}
 
 	if (!f->ok()) {
-		debug->form("Protocol::receiveFile(): can't write file!\n");
+		*debug << "Protocol::receiveFile(): can't write file!" << endl;
 		delete f;
 		return;
 	}
@@ -484,12 +487,10 @@ void Protocol::handleLISTEN(Device * /* dev */, int sec_addr, char *iobuf)
 
 	switch (sec_addr) {
 	case 0:
-        	debug->form("Protocol::handleLISTEN(): open -> '%s'\n",
- 			iobuf?iobuf:"<null>");
+		*debug << "Protocol::handleLISTEN(): open -> " << (iobuf?iobuf:"<null>") << endl;
 		break;
 	case 1: /* save */
-		debug->form("Protocol::handleLISTEN(): save -> '%s'\n",
-			iobuf?iobuf:"<null>");
+		*debug << "Protocol::handleLISTEN(): save -> " << (iobuf?iobuf:"<null>") << endl;
 		receiveFile(_dev, iobuf);
 		_update = util_strdup(iobuf);
 		/*
@@ -511,7 +512,7 @@ void Protocol::handleLISTEN(Device * /* dev */, int sec_addr, char *iobuf)
 		*/
 		break;
 	case 15:
-        	debug->form("Protocol::handleLISTEN(): command channel\n");
+		*debug << "Protocol::handleLISTEN(): command channel" << endl;
 
 		/*
 		 *  need a little pause here !?!
@@ -541,8 +542,7 @@ void Protocol::handleLISTEN(Device * /* dev */, int sec_addr, char *iobuf)
 
 		break;
 	default:
-                debug->form("Protocol::handleLISTEN(): secondary address %d -> '%s'\n",
-                	sec_addr, iobuf?iobuf:"<null>");
+		*debug << "Protocol::handleLISTEN(): secondary address " << sec_addr << " -> '" << (iobuf?iobuf:"<null>") << "'";
 		break;
 	}
 }
@@ -556,7 +556,7 @@ void Protocol::handleTALK(Device *dev, int sec_addr, char *s)
 
 	switch (sec_addr) {
 	case 15:
-		debug->form("Protocol::handleTALK(): command channel\n");
+		*debug << "Protocol::handleTALK(): command channel" << endl;
 
 		if (set_error) {
 			set_error = 0;
@@ -585,7 +585,7 @@ void Protocol::handleTALK(Device *dev, int sec_addr, char *s)
 			break;
 		default:
 			dev->error("00, OK,00,00");
-			debug->form("Protocol::handleTALK(): sec_addr = %d\n", sec_addr);
+			*debug << "Protocol::handleTALK(): sec_addr = " << sec_addr << endl;
 			if (s[0] == '$') {
 				if (s[1] != '$') {
 					if (strlen(s) > 1) {
@@ -630,7 +630,7 @@ void Protocol::handleTALK(Device *dev, int sec_addr, char *s)
 						sendFile(f);
 					}
 				} else {
-					debug->form("Protocol::handleTALK(): file not found! [%s]\n", s);
+					*debug << "Protocol::handleTALK(): file not found! [" << s << "]"<< endl;
 					dev->error("62, FILE NOT FOUND,00,00");
 				}
 			}
@@ -645,7 +645,7 @@ void Protocol::handleOPEN(Device * /* dev */, int sec_addr, char *iobuf)
 	int eoi;
 	byte_t b;
 
-	debug->form("Protocol::handleOPEN(): sec_addr = 0x%02x\n", sec_addr);
+	*debug << "Protocol::handleOPEN(): sec_addr = " << sec_addr << endl;
 	a = 0;
 	do {
 		if (_io->get(_io->ATN)) {
@@ -780,7 +780,7 @@ void Protocol::handleFASTLOAD(Device *dev, int /* sec_addr */)
 
 	f = dev->open("XXX.BAS");
 	if (f == NULL) {
-		debug->form("Protocol::handleFASTLOAD(): file not found!\n");
+		*debug << "Protocol::handleFASTLOAD(): file not found!" << endl;
 		return;
 	}
 

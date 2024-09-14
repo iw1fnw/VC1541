@@ -23,8 +23,8 @@ FileD64::FileD64(FileSystemD64 *fs,
 		 track_sector_t ts_dir,
 		 int dir_slot,
 		 const char *path,
-		 const char *name = NULL,
-		 file_mode_t mode = File_RO)
+		 const char *name,
+		 file_mode_t mode)
 		 : File(path, name, mode)
 {
 	_fs = fs;

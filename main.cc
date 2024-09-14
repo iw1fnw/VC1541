@@ -50,10 +50,9 @@ static bool constrain_lpt(const char *name, const char *arg)
 	int val = strtol(arg, &endp, 0);
 
 	if ((val >= 1) && (val <= 4) && (endp[0] == '\0')) return true;
-	debug->form("* Warning: invalid argument (%s) for option '%s'!\n",
-		    arg, name);
-	debug->form("           ignoring this option.\n");
-	debug->form("           valid arguments: 1 - 4.\n");
+	*debug << "* Warning: invalid argument (" << arg << ") for option '" << name << "'!" << endl;
+	*debug << "           ignoring this option." << endl;
+	*debug << "           valid arguments: 1 - 4." << endl;
 	return false;
 }
 
@@ -61,10 +60,9 @@ static bool constrain_cable(const char *name, const char *arg)
 {
 	if (stricmp(arg, "X1541") == 0) return true;
 	if (stricmp(arg, "XE1541") == 0) return true;
-	debug->form("* Warning: invalid argument (%s) for option '%s'!\n",
-		    arg, name);
-	debug->form("           ignoring this option.\n");
-	debug->form("           valid arguments: X1541, XE1541\n");
+	*debug << "* Warning: invalid argument (" << arg << ") for option '" << name << "'!" << endl;
+	*debug << "           ignoring this option." << endl;
+	*debug << "           valid arguments: X1541, XE1541" << endl;
 	return false;
 }
 
@@ -75,10 +73,9 @@ static bool constrain_mhz(const char *name, const char *arg)
 	int val = strtol(arg, &endp, 0);
 
 	if ((val >= 33) && (val <= 1000) && (endp[0] == '\0')) return true;
-	debug->form("* Warning: invalid argument (%s) for option '%s'!\n",
-		    arg, name);
-	debug->form("           ignoring this option.\n");
-	debug->form("           valid arguments: 33 - 1000.\n");
+	*debug << "* Warning: invalid argument (" << arg << ") for option '" << name << "'!" << endl;
+	*debug << "           ignoring this option." << endl;
+	*debug << "           valid arguments: 33 - 1000." << endl;
 	return false;
 }
 
@@ -89,10 +86,9 @@ static bool constrain_speed(const char *name, const char *arg)
 	int val = strtol(arg, &endp, 0);
 
 	if ((val >= 50) && (val <= 1000000) && (endp[0] == '\0')) return true;
-	debug->form("* Warning: invalid argument (%s) for option '%s'!\n",
-		    arg, name);
-	debug->form("           ignoring this option.\n");
-	debug->form("           valid arguments: 50 - 1000000.\n");
+	*debug << "* Warning: invalid argument (" << arg << ") for option '" << name << "'!" << endl;
+	*debug << "           ignoring this option." << endl;
+	*debug << "           valid arguments: 50 - 1000000." << endl;
 	return false;
 }
 
@@ -103,10 +99,9 @@ static bool constrain_dev(const char *name, const char *arg)
 	int val = strtol(arg, &endp, 0);
 
 	if ((val >= 8) && (val <= 11) && (endp[0] == '\0')) return true;
-	debug->form("* Warning: invalid argument (%s) for option '%s'!\n",
-		    arg, name);
-	debug->form("           ignoring this option.\n");
-	debug->form("           valid arguments: 8 - 11.\n");
+	*debug << "* Warning: invalid argument (" << arg << ") for option '" << name << "'!" << endl;
+	*debug << "           ignoring this option." << endl;
+	*debug << "           valid arguments: 8 - 11." << endl;
 	return false;
 }
 

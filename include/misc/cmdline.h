@@ -46,7 +46,7 @@ public:
 
 	void showArgs(void);
 
-	static const CmdLineArgs * CmdLineArgs::getInstance(void);
+	static const CmdLineArgs * getInstance(void);
 };
 
 #endif /* __misc_cmdline_h */

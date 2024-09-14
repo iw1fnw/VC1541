@@ -14,7 +14,7 @@
 #define Uses_TWindow
 #define Uses_TScroller
 #define Uses_TScrollBar
-#include <tv.h>
+#include <tvision/tv.h>
 
 #include "misc/debug.h"
 #include "misc/vector.h"
@@ -35,7 +35,7 @@ public:
 	virtual ~TDebugScroller(void);
         virtual void draw(void);
 
-	streamsize addStr(const char *s, streamsize n);
+	std::streamsize addStr(const char *s, std::streamsize n);
 };
 
 class TDebugWindow : public streambuf, public TWindow
@@ -52,7 +52,7 @@ public:
 	int overflow (int c);
          // Defining xsputn is an optional optimization.
          // (streamsize was recently added to ANSI C++, not portable yet.)
-	streamsize xsputn(const char *s, streamsize n);
+	std::streamsize xsputn(const char *s, std::streamsize n);
 };
 
 class debugstream : public ostream

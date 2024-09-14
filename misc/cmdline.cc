@@ -9,8 +9,8 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <iostream.h>
-#include <iomanip.h>
+#include <iostream>
+#include <iomanip>
 
 #include "misc/util.h"
 #include "misc/debug.h"
@@ -18,6 +18,8 @@
 
 char * CmdLineArgs::_program = NULL;
 CmdLineArgs * CmdLineArgs::_self = NULL;
+
+using namespace std;
 
 CmdLineArgs::CmdLineArgs(int *argc, char ***argv)
 {
@@ -44,9 +46,8 @@ CmdLineArgs::CmdLineArgs(int *argc, char ***argv)
 			if (!_arg[b].has_arg) break;
 			a++;
 			if (a >= *argc) {
-				debug->form("* Warning: missing parameter for option '%s'!\n",
-					_arg[b].name);
-				debug->form("           ignoring this option.\n");
+				(*debug) << "* Warning: missing parameter for option '" << _arg[b].name << "'!" << endl;
+				(*debug) << "           ignoring this option." << endl;
 				_arg[b].is_given = false;
 				break;
 			}
@@ -60,8 +61,8 @@ CmdLineArgs::CmdLineArgs(int *argc, char ***argv)
 			break;
 		}
 		if (!found) {
-			debug->form("* Warning: unknown option '%s'!\n", (*argv)[a]);
-			debug->form("           ignoring this option.\n");
+			(*debug) << "* Warning: unknown option '" << (*argv)[a] << "'!" << endl;
+			(*debug) << "           ignoring this option." << endl;
 		}
 		a++;
 	}

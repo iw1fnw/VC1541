@@ -41,7 +41,7 @@
 #define Uses_otstream
 #define Uses_TStringCollection
 #define Uses_TPalette
-#include <tv.h>
+#include <tvision/tv.h>
 
 #include "libvfs/dir.h"
 #include "libvfs/device.h"
@@ -159,7 +159,7 @@ private:
         TTerminal       *_terminal;
 
 	static TMenuBar * initMenuBar(TRect r);
-	static TStatusLine * App::initStatusLine(TRect r);
+	static TStatusLine * initStatusLine(TRect r);
 	void handleEvent(TEvent &event);
 public:
 	App(void);

@@ -10,8 +10,8 @@
 #ifndef __libvfs_fs_zip_h
 #define __libvfs_fs_zip_h
 
-#include <list.h>
-#include <stack.h>
+#include <list>
+#include <stack>
 
 #include "libvfs/fs_exec.h"
 

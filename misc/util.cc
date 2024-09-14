@@ -7,8 +7,8 @@
  *  This file is part of VC1541, the Commodore Floppy 1541 Emulator.
  */
 
-#include <errno.h>
 #include <stdio.h>
+#include <errno.h>
 #include <ctype.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -17,6 +17,8 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+
+#include <cstring>
 
 #include "misc/util.h"
 #include "misc/debug.h"
@@ -60,7 +62,7 @@ int util_system(const char *cmd, bool close_stdin)
 
         if (a != 0) {
                 *debug << _MODULE_ "system: exit code = " << a << endl;
-                *debug << _MODULE_ "system: " << sys_errlist[errno]
+                *debug << _MODULE_ "system: " << strerror(errno)
                        << endl;
         }
 

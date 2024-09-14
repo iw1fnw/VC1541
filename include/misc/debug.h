@@ -11,7 +11,9 @@
 #define __misc_debug_h
 
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
+
+using namespace std;
 
 extern ostream *debug;
 

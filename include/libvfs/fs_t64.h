@@ -16,7 +16,7 @@
 class FileSystemT64 : public FileSystem
 {
 private:
-	const int CHECK_LEN = 20;
+	static const int CHECK_LEN = 20;
 	static bool check_type_t64(File *file);
 public:
 	FileSystemT64(File *file);

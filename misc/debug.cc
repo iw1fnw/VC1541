@@ -11,5 +11,7 @@
 
 #include "misc/debug.h"
 
+using namespace std;
+
 ostream *debug = &cerr;
 

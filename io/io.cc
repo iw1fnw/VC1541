@@ -7,8 +7,8 @@
  *  This file is part of VC1541, the Commodore Floppy 1541 Emulator.
  */
 
-#include <iostream.h>
-#include <iomanip.h>
+#include <iostream>
+#include <iomanip>
 
 #include "vc1541/io.h"
 

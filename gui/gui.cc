@@ -252,7 +252,7 @@ void TDirList::handleEvent(TEvent &event)
 		case kbLeft:
 			event.what = evCommand;
 	                event.message.command = cmChdir;
-        	        event.message.infoPtr =	"..";
+        	        event.message.infoPtr =	(char *)"..";
 	                putEvent(event);
 		        clearEvent(event);
 			break;
@@ -576,8 +576,8 @@ TSectorWindow::TSectorWindow(const TRect &bounds, const char *title, Device *dev
 	insert(new TLabel(TRect(1, 1, 8, 2), "~T~rack:", _il_t));
 	insert(_view);
 	_view->set_track_sector(18, 0);
-	_il_t->setData("18");
-	_il_s->setData("0");
+	_il_t->setData((char *)"18");
+	_il_s->setData((char *)"0");
 }
 
 void TSectorWindow::handleEvent(TEvent &event)
@@ -637,9 +637,9 @@ void TSectorWindow::handleEvent(TEvent &event)
         	switch (event.message.command) {
                 case cmSetTrackSector:
 			char buf[10];
-			sprintf(buf, "%d", (ushort)event.message.infoPtr >> 8);
+			sprintf(buf, "%d", (ushort)(ulong)event.message.infoPtr >> 8);
 			_il_t->setData(buf);
-			sprintf(buf, "%d", (ushort)event.message.infoPtr & 0xff);
+			sprintf(buf, "%d", (ushort)(ulong)event.message.infoPtr & 0xff);
 			_il_s->setData(buf);
 			break;
 		}

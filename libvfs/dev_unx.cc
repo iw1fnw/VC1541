@@ -9,8 +9,8 @@
 
 #ifdef LINUX
 
-#include <iostream.h>
-#include <iomanip.h>
+#include <iostream>
+#include <iomanip>
 
 #include "misc/debug.h"
 #include "libvfs/dev_unx.h"

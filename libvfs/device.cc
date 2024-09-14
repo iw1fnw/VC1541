@@ -11,6 +11,8 @@
 #include "ctype.h"
 #endif /* MSDOS */
 
+#include "gui/gui.h"
+
 #include "misc/util.h"
 #include "misc/debug.h"
 
@@ -18,7 +20,6 @@
 #include "libvfs/dev_dos.h"
 #include "libvfs/fs_fact.h"
 
-#include "gui/gui.h"
 
 /* #define DEBUG_CHDIR */
 #define _MODULE_ "Device: "

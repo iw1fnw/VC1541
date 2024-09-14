@@ -20,9 +20,9 @@ CXX=g++
 #DEBUGLIBS=lib/libefence.a
 #DEBUGLIBS=-L/opt/lib -lccmalloc -ldl
 #DEBUGLIBS=/opt/lib/ccmalloc.o -ldl
-#LIBTVDIR=$(HOME)
-LIBTVDIR=/opt
-LIBTV=$(LIBTVDIR)/lib/libtvision.a
+LIBTVDIR=${HOME}/tvision
+#LIBTVDIR=/opt
+LIBTV=$(LIBTVDIR)/build/libtvision.a
 CPPFLAGS=-DLINUX \
 	-Iinclude \
 	-I/opt/include \
@@ -31,7 +31,7 @@ CPPFLAGS=-DLINUX \
 	-I$(HOME)/include \
 	-I$(HOME)/include/tvision
 CFLAGS=$(CPPFLAGS)
-LIBS= $(LIBTV) -lintl -lncurses # -lgpm
+LIBS= $(LIBTV) -lncurses -lgpm # -lintl 
 LDFLAGS=-L/opt/lib -L$(LIBTVDIR)/lib -L$(HOME)/lib $(LIBS)
 
 ###############################################################################
@@ -110,10 +110,10 @@ obj:
 obj/%.o : %.cc
 	@echo "++ compiling $<..."
 	$(VERBOSE)$(CXX) -g -MMD -c -o $@ $(CFLAGS) $<
-	@mv $*.d $*.d~
-	@sed -e 's,^$*,obj/&,' $*.d~ > $*.d
-	@rm -f $*.d~
-	@mv $*.d obj
+#	@mv $*.d $*.d~
+#	@sed -e 's,^$*,obj/&,' $*.d~ > $*.d
+#	@rm -f $*.d~
+#	@mv $*.d obj
 
 clean:
 	rm -f $(OBJS) $(DESTOBJS) $(TESTOBJS) $(LIBVFSOBJS) $(INITOBJS) obj/*.d

@@ -25,13 +25,13 @@ TDebugWindow::~TDebugWindow(void)
 
 int TDebugWindow::sync(void)
 {
- 	streamsize n = pptr() - pbase();
+ 	std::streamsize n = pptr() - pbase();
 	return (n && _interior->addStr(pbase(), n) != n) ? EOF : 0;
 }
 
 int TDebugWindow::overflow(int c)
 {
-	streamsize n = pptr() - pbase();
+	std::streamsize n = pptr() - pbase();
 	if (n && sync()) return EOF;
 	if (c != EOF) {
 		char cbuf[1];
@@ -42,7 +42,7 @@ int TDebugWindow::overflow(int c)
 	return 0;
 }
 
-streamsize TDebugWindow::xsputn (const char *s, streamsize n)
+std::streamsize TDebugWindow::xsputn (const char *s, std::streamsize n)
 {
 	return sync() == EOF ? 0 : _interior->addStr(s, n);
 }
@@ -128,7 +128,7 @@ void TDebugScroller::addToCurrent(const char *s, int len)
         }
 }
 
-streamsize TDebugScroller::addStr(const char *s, streamsize n)
+std::streamsize TDebugScroller::addStr(const char *s, std::streamsize n)
 {
 	int a, b;
 

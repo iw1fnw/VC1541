@@ -16,8 +16,8 @@
 class FileSystemLNX : public FileSystem
 {
 private:
-	const int BLOCK_LEN = 254;
-	const int CHECK_LEN = 254;
+	static const int BLOCK_LEN = 254;
+	static const int CHECK_LEN = 254;
 	int lnx_get_header(char *buf, word_t *dirlen, word_t *direntries);
 	char * lnx_getstr(word_t *a, char *dirmem, word_t dirlen);
 	static bool check_type_lnx(File *file);

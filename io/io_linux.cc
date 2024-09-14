@@ -9,15 +9,17 @@
 
 #ifdef LINUX
 
-#include <asm/io.h>
+#include <sys/io.h>
 #include <unistd.h>
-#include <iostream.h>
+#include <iostream>
 
 #include "misc/debug.h"
 #include "vc1541/io_linux.h"
 
 /* #define HAVE_TSC */
 #include "misc/profile.h"
+
+using namespace std;
 
 IO_Linux::IO_Linux(int mhz, word_t port,
  		   byte_t atn, byte_t data, byte_t clock) :
@@ -29,7 +31,7 @@ IO_Linux::IO_Linux(int mhz, word_t port,
         _mhz = 0;
 	if (mhz != 0) {
 		_mhz = mhz;
-		debug->form("+ processor speed set to %dMHz.\n", mhz);
+		*debug << "+ processor speed set to " << mhz << "MHz." << endl;
 		return;
 	}
 
@@ -125,6 +127,7 @@ int IO_Linux::microSleepATN(word_t val)
 		tsc_read(&p2);
 	} while (p1.ll > p2.ll);
 #endif /* HAVE_TSC */
+	return 0;
 }
 
 #endif /* LINUX */
