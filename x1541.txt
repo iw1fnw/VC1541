@@ -1,0 +1,373 @@
+-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+This file comes with the Star Commander and explains the various cable types
+that the Star Commander supports. VC1541 only supports the X1541 and the
+XE1541 cable.
+For more information about the Star Commander point your webbrowser to:
+http://ludens.elte.hu/~sta/sc.html
+-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+  THE X1541 INTERFACES:
+
+  Here is the description of the X1541 interfaces, with which you can  connect
+a Commodore drive to your PC to use with the Commander.
+
+  The mode of your parallel port is  a vital  feature  that  determines  which
+cables you can use with your machine so try to find out all the modes of  your
+parallel port. Older I/O and parallel port cards only have the  unidirectional
+SPP mode, most Pentium and newer 486  motherboards  have  integrated  parallel
+ports and allow you to set the port mode in the BIOS  setup,  with  the  usual
+choices of SPP, EPP and ECP.
+
+  You can convert unidirectional SPP parallel port cards into a  bidirectional
+PS/2 port by disconnecting pin 1 of the data latch  74LS374  from  ground  and
+connecting it to one of the output pins on the control latch 74LS174. This pin
+can be any of pins 2, 5, 7, 10, 12 or 15 and must  not  be  connected  to  any
+other chip on the board. The corresponding input pin (3, 4, 6, 11, 13  or  14)
+must be connected to bit 5 of the data bus. If this is not the  case  on  your
+card then you can access this bit from the data latch. Find out which  one  of
+its output pins (2, 5, 6, 9, 12, 15, 16 or 19) is connected to pin  7  of  the
+parallel port connector and get bit 5 from the corresponding input pin (3,  4,
+7, 8, 13, 14, 17 or 18).
+
+  It's possible that, when changing the mode of the integrated  parallel  port
+in your BIOS setup, you won't find the necessary modes as they are  called  in
+this documentation. Some BIOS setups have different names for the port  modes:
+Compatible, Normal and Standard usually refer to SPP, Extended  possibly means
+PS/2 or EPP and Enhanced stands for EPP or ECP. Please, note that the EPP mode
+cannot be reliably detected by SCSETUP on some machines: PS/2 is reported even
+if the port is not really in  PS/2  mode.  Use  PS/2,  if  available,  or  ECP
+instead.
+
+  The advices below, telling you which cables to use  with  a  given  parallel
+port mode and vice versa, are based  on  the  fact  that  most  SPP  and  PS/2
+parallel ports support the X1541 cable and most EPP  and  ECP  parallel  ports
+don't. However, because of the lack of strict standards, there are  exceptions
+to these rules. There exist SPP and PS/2 parallel ports that don't support the
+X1541 cable and it's also possible that certain EPP and ECP parallel ports  do
+support it. You have to determine the true capabilities of your parallel  port
+before choosing the cables to use.
+
+  If you have a unidirectional SPP parallel port then you can  use  the  X1541
+cable and, optionally, the XH1541 hybrid cable, for the highest speed possible
+on SPP ports. If you have a bidirectional PS/2 parallel port then you can  use
+any of the cables but, for maximum speed, you're  advised  to  use  the  X1541
+cable and the XP1541 parallel cable together. Unfortunately, since  the  X1541
+cable doesn't work with most parallel ports in EPP and ECP mode, you will have
+to configure them to SPP mode with the BIOS setup program or with jumpers.  If
+the Commander still doesn't work then you have two possibilities:  you  either
+use the XE1541 cable, a substitute for the X1541 cable,  or  buy  a  secondary
+parallel port card, plug the X1541 cable to it and optionally use  the  XP1541
+parallel cable on the EPP or ECP port.
+
+  The X1541 interface is the easiest of all, you only need to connect  certain
+pins of the serial port of the Commodore drive and pins of the  parallel  port
+of the PC. You need some plugs, some wires  and  some  soldering  skills.  The
+XE1541 interface is not much harder, it only needs some additional diodes. The
+XH1541 and XP1541 interfaces are a lot harder to build because you need to  do
+some modifications inside the Commodore drive. If you're  not  experienced  at
+soldering then don't even think about doing them yourself.  In  addition,  the
+XH1541 interface also needs some diodes.
+
+  The following tables may help you to decide which  cables  suit  your  needs
+best. Depending on your parallel port hardware, your soldering skills and your
+patience, you may choose the cables that will work best for you.
+
+  This table is a compatibility chart between different  parallel  port  modes
+and different interfaces:
+
+                +---------------+---------+---------+---------+
+                | Compatibility |   SPP   |  PS/2   | EPP/ECP |
+                +---------------+---------+---------+---------+
+                |     X1541     |   yes   |   yes   |   no    |
+                +---------------+---------+---------+---------+
+                |    XE1541     |   yes   |   yes   |   yes   |
+                +---------------+---------+---------+---------+
+                |    XH1541     |   yes   |   yes   |   yes   |
+                +---------------+---------+---------+---------+
+                |    XP1541     |   no    |   yes   |   yes   |
+                +---------------+---------+---------+---------+
+
+  This table shows the ways to achieve different speeds on a  single  parallel
+ports in different modes:
+
+            +-----------------+-----------+-----------+-----------+
+            |   Single port   |    SPP    |   PS/2    |  EPP/ECP  |
+            +-----------------+-----------+-----------+-----------+
+            |  Minimum speed  |   X1541   |   X1541   |  XE1541   |
+            |                 |    (1)    |    (1)    |    (2)    |
+            +-----------------+-----------+-----------+-----------+
+            |  Medium speed   |  X1541+   |  X1541+   |           |
+            |                 |  XH1541   |  XH1541   |           |
+            |                 |           |    (1)    |           |
+            +-----------------+-----------+-----------+-----------+
+            |  Maximum speed  |           |  X1541+   |  XE1541+  |
+            |                 |           |  XP1541   |  XP1541   |
+            |                 |           |           |    (2)    |
+            +-----------------+-----------+-----------+-----------+
+
+  Notes:
+    (1) This is not the maximum performance for your parallel  port,  you  may
+        want to use another cable configuration.
+
+  These tables show the ways to achieve different speeds on two parallel ports
+of different modes. The first cable refers to the primary parallel port, whose
+mode is indicated by the table title, and the second refers to  the  secondary
+parallel port, whose mode is indicated by the column  title.  Note  that  when
+you're advised to swap your parallel ports then it's meant  to  be  a  logical
+swap, not a physical one:
+
+          +---------------------+-----------+-----------+-----------+
+          |     Two ports,      |    SPP    |   PS/2    |  EPP/ECP  |
+          |   primary is SPP    |           |           |           |
+          +---------------------+-----------+-----------+-----------+
+          |    Minimum speed    |   X1541   |   X1541   |   X1541   |
+          |                     |   (1,2)   |  (1,2,3)  |   (1,2)   |
+          +---------------------+-----------+-----------+-----------+
+          |    Medium speed     |  X1541+   |  X1541+   |  X1541+   |
+          |                     |  XH1541   |  XH1541   |  XH1541   |
+          |                     |    (2)    |  (1,2,3)  |   (1,2)   |
+          +---------------------+-----------+-----------+-----------+
+          |    Maximum speed    |           |  X1541 +  |  X1541+   |
+          |                     |           |  XP1541   |  XP1541   |
+          +---------------------+-----------+-----------+-----------+
+
+  Notes:
+    (1) This is not the maximum performance for your parallel ports,  you  may
+        want to use another cable configuration.
+    (2) You don't need two parallel ports for this  cable  configuration,  you
+        can hook the indicated cables up to the primary parallel port.
+    (3) This is not the maximum performance for your parallel ports. Swap your
+        parallel ports and try again.
+
+          +---------------------+-----------+-----------+-----------+
+          |     Two ports,      |    SPP    |   PS/2    |  EPP/ECP  |
+          |   primary is PS/2   |           |           |           |
+          +---------------------+-----------+-----------+-----------+
+          |    Minimum speed    |   X1541   |   X1541   |   X1541   |
+          |                     |   (1,2)   |   (1,2)   |   (1,2)   |
+          +---------------------+-----------+-----------+-----------+
+          |    Medium speed     |  X1541+   |  X1541+   |  X1541+   |
+          |                     |  XH1541   |  XH1541   |  XH1541   |
+          |                     |   (1,2)   |   (1,2)   |   (1,2)   |
+          +---------------------+-----------+-----------+-----------+
+          |    Maximum speed    |  X1541+   |  X1541 +  |  X1541+   |
+          |                     |  XP1541   |  XP1541   |  XP1541   |
+          |                     |    (2)    |    (2)    |    (2)    |
+          +---------------------+-----------+-----------+-----------+
+
+  Notes:
+    (1) This is not the maximum performance for your parallel ports,  you  may
+        want to use another cable configuration.
+    (2) You don't need two parallel ports for this  cable  configuration,  you
+        can hook the indicated cables up to the primary parallel port.
+
+          +---------------------+-----------+-----------+-----------+
+          |     Two ports,      |    SPP    |   PS/2    |  EPP/ECP  |
+          | primary is EPP/ECP  |           |           |           |
+          +---------------------+-----------+-----------+-----------+
+          |    Minimum speed    |    (1)    |    (1)    |  XE1541   |
+          |                     |           |           |   (2,3)   |
+          +---------------------+-----------+-----------+-----------+
+          |    Medium speed     |    (1)    |    (1)    |  XE1541+  |
+          |                     |           |           |  XH1541   |
+          |                     |           |           |    (3)    |
+          +---------------------+-----------+-----------+-----------+
+          |    Maximum speed    |    (1)    |    (1)    |  XE1541+  |
+          |                     |           |           |  XP1541   |
+          |                     |           |           |   (2,3)   |
+          +---------------------+-----------+-----------+-----------+
+
+  Notes:
+    (1) You shouldn't have an EPP/ECP parallel port as your primary port. Swap
+        your parallel ports and try again.
+    (2) You don't need two parallel ports for this  cable  configuration,  you
+        can hook the indicated cables up to the primary parallel port.
+
+  The following diagrams are pictured as viewed  from  the  solder  end  (back
+side) of the plug. It may be of help to you that the numbers are often printed
+in small letters onto the plug itself. When wiring the interface cables,  make
+sure that they are not too long: a cable longer than  about  two  meters  will
+possibly not work, especially if it isn't shielded at all.
+
+  The PC parallel port (male DB-25 connector):
+
+            PaperEnd   Busy
+        SelectIn   |   |   Ack        Data 7 - Data 0       Strobe
+               |   |   |   |   +-------------+-------------+   |
+               V   V   V   V   |                           |   V
+            +------------------------------------------------------+
+            | 13  12  11  10   9   8   7   6   5   4   3   2   1   |
+            |  o   o   o   o   o   o   o   o   o   o   o   o   o   |
+            +-+                                                  +-+
+              |  o   o   o   o   o   o   o   o   o   o   o   o   |
+              | 25  24  23  22  21  20  19  18  17  16  15  14   |
+              +--------------------------------------------------+
+                 |                           |   ^   ^   ^   ^
+                 +-------------+-------------+   |   |   |   |
+                            Ground          Select   |   |   AutoFeed
+                                                  Init   Error
+
+  The Commodore drive serial bus port (male 6 pin DIN connector):
+
+                                     Reset
+                                       |
+                                       V
+                              +-------+ +-------+
+                            +-+       +-+       +-+
+                            |     5         1     |
+                   Data --> |     o    6    o     | <-- SrqIn
+                            |          o          |
+                            |     4         2     |
+                    Clk --> |     o    3    o     | <-- Gnd
+                            |          o          |
+                            +-+                 +-+
+                              +-----------------+
+                                       ^
+                                       |
+                                      Atn
+
+  The Commodore 1541 drive VIA#1 periphery chip:
+
+                     | | | | | | | | | | | | | | | | | | | |
+                   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                   | 40                                   21 |
+                   |)                                        |
+                   | 1 2 3 4 5 6 7 8 9                    20 |
+                   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                     | | | | | | | | | | | | | | | | | | | |
+
+                       |             |
+                       +------+------+
+                          PA0 - PA7
+
+  You can find the VIA#1 by searching for a chip on the motherboard  that  has
+the type number 6522 on it and none of its pins 2-9 are connected to any other
+chip.
+
+  The X1541 interface connects the following pins:
+
+                 CBM drive serial port   PC parallel port
+
+                       2    Gnd --------- 18-25 Ground
+                       3    Atn ---------- 1    Strobe
+                       4    Clk --------- 14    AutoFeed
+                       5    Data -------- 17    Select
+                       6    Reset ------- 16    Init
+
+  Although the Commander doesn't make use of it, the original specification of
+the X1541 interface requires the short connection of pins  2  and  15  on  the
+parallel port plug, since X1541 uses it for autodetection. If  you  intend  to
+use other transfer  programs  with  the  interface  or  want  to  access  your
+Commodore drive under the emulators, you might want to do this alteration,  as
+well.
+
+  You have to connect the X1541 interface to an  SPP  or  PS/2  parallel  port
+because the lines used by this cable are not necessarily bidirectional on  EPP
+and ECP parallel ports. This interface should work with all kinds of Commodore
+drives and their clones.
+
+  The XE1541 extended interface connects the following pins:
+
+      CBM drive serial port   PC parallel port      PC parallel port
+
+            2    Gnd ------------------------------- 18-25 Ground
+            3    Atn --------- 13    SelectIn --->|-- 1    Strobe
+            4    Clk --------- 12    PaperEnd --->|- 14    AutoFeed
+            5    Data -------- 11    Busy ------->|- 17    SelectIn
+            6    Reset ------- 10    Ack -------->|- 16    Init
+
+  This interface, unlike the X1541 interface, needs  electronical  components,
+namely diodes, to decouple the data lines of the PC parallel port while the PC
+receives data from the Commodore drive. You have to solder them  right  before
+each of pins 1, 14, 16 and 17, their cathodes pointing towards the pins.  Note
+that you should primarily use BAT85 diodes or other Schottky-diodes, like  the
+1N5819. If you can only get 1N4148 diodes then you can try them but be warned,
+they may make the cable inoperable on certain parallel ports.
+
+  You can connect the XE1541 interface to any type of parallel port and it has
+no common lines with the XP1541 interface therefore you can connect them  both
+to the same PS/2, EPP or ECP parallel  port,  using  a  Y-shaped  cable.  This
+interface should work with all kinds of Commodore drives and their clones.
+
+  The XH1541 hybrid interface connects the following pins:
+
+          CBM 1541 VIA#1      PC parallel port      PC parallel port
+
+            2    PA0 --------- 13    SelectIn ---->|- 2    Data 0
+            3    PA1 --------- 12    PaperEnd ---->|- 3    Data 1
+            4    PA2 --------- 10    Ack --------->|- 4    Data 2
+            5    PA3 --------- 11    Busy -------->|- 5    Data 3
+            6    PA4 ----------------------------->|- 6    Data 4
+            7    PA5 ----------------------------->|- 7    Data 5
+            8    PA6 ----------------------------->|- 8    Data 6
+            9    PA7 ----------------------------->|- 9    Data 7
+
+  This interface also needs diodes, you have to solder them right before  each
+of pins 2-9, their cathodes pointing towards the pins. The best diode for this
+interface is the 1N4148 or equivalent.
+
+  You can connect the XH1541 interface to any type of parallel port and it has
+no common lines with the X1541 interface therefore you can connect  them  both
+to the same SPP or PS/2 parallel port, using a Y-shaped cable. This  interface
+works with 1541 drives and compatible clones only.
+
+  The XP1541 parallel interface connects the following pins:
+
+                     CBM 1541 VIA#1      PC parallel port
+
+                       2    PA0 ---------- 2    Data 0
+                       3    PA1 ---------- 3    Data 1
+                       4    PA2 ---------- 4    Data 2
+                       5    PA3 ---------- 5    Data 3
+                       6    PA4 ---------- 6    Data 4
+                       7    PA5 ---------- 7    Data 5
+                       8    PA6 ---------- 8    Data 6
+                       9    PA7 ---------- 9    Data 7
+
+  You have to connect the XP1541 interface to a PS/2, EPP or ECP parallel port
+because the data lines are unidirectional on SPP parallel ports. If you have a
+PS/2 parallel port then  you  can  connect  both  the  X1541  and  the  XP1541
+interface to the same parallel port, using a Y-shaped cable. If  you  have  an
+EPP or ECP parallel port then you can either use the XE1541 cable or build two
+separate cables and buy a secondary, cheap, old SPP parallel port card for the
+X1541 interface. This interface works with 1541 drives and  compatible  clones
+only.
+
+  Please, note that neither the XH1541 interface or the XP1541 interface is  a
+substitute for the original X1541 interface or the XE1541 interface, you  have
+to connect two cables to the Commodore drive and the PC at the  same  time  to
+acquire the extended transfer capabilities. Don't connect the XH1541 cable  or
+the XP1541 cable alone to the Commodore drive because neither of them  contain
+a GND line: plugging them without the X1541 cable  or  the  XE1541  cable  may
+short circuit your machines and damage the periphery chips. Always connect the
+XH1541 interface or the XP1541 interface to your Commodore drive and  your  PC
+before switching either of them on and switch both  machines  off  before  you
+pull them out.
+
+  In 1541 drives nothing is defined to any of the  bits  of  Port A,  you  can
+connect the XH1541 interface and the XP1541 interface without any  problem. In
+1541C drives, bit 0 of Port A is used for the detection of the head being over
+track 1. After stripping this connection off of the chip,  you  will  have  to
+change the DOS ROM to that of the 1541 or the 1541-II;  otherwise  you'll  get
+strange results when the drive is seeking because the DOS tries to rely on the
+detector line which doesn't exist anymore. In 1541-II drives bit 0  of  Port A
+is grounded, strip this connection off of the chip. In 1571 drives  there  are
+several lines connected to the bits of Port A therefore you  can  use  neither
+the XH1541 interface or the XP1541 interface with them.
+
+  If you already have a floppy speeder like Speed DOS or Dolphin DOS  in  your
+1541 drive then you probably have a parallel plug at its rear. In   this  case
+you have many options of implementing the XP1541  interface.  You  can  create
+another cable to connect the drive to the PC with.  You  can  also  split  the
+cable between the drive and the C64 into a Y-shaped cable,  one  end  plugging
+into the drive, another into the C64 and the third one into the PC,  in  which
+case remember not to plug the cable into the C64 and the PC at the same  time.
+However, your best choice is creating a small converter imitating the C64 user
+port on one side and plugging into the PC parallel port on the other side.
+
+  If your 1541 drive has no parallel capabilities then you might still want to
+create a plug at its rear. This way there will be no cable always hanging  out
+of the drive and with another cable you'll be able to  use  parallel  transfer
+with the C64, too. Please, note that the parallel copy programs  for  the  C64
+may require some  additional  connections.  Read  their  documentation  before
+soldering so that you can connect the additional pins to the plug, if needed.

@@ -1,0 +1,206 @@
+-------------------------------------------------------------------------------
+$Id: changes,v 1.3 1998/10/26 03:02:42 tp Exp $
+-------------------------------------------------------------------------------
+                     __     ______   _ ____  _  _   _ 
+                     \ \   / / ___| / | ___|| || | / |
+                      \ \ / / |     | |___ \| || |_| |
+                       \ V /| |___  | |___) |__   _| |
+                        \_/  \____| |_|____/   |_| |_|
+                    ===================================
+
+			 VC 1541 Emulator V0.04pl6
+
+		      Copyright (c) 1997 Torsten Paul
+			   Lommatzscher Str. 26
+			      01139 Dresden
+			paul@os.inf.tu-dresden.de
+			   All Rights Reserved
+
+-------------------------------------------------------------------------------
+				 CHANGES
+-------------------------------------------------------------------------------
+V0.04pl6:
+	* fixed the XE1541 cable detection code
+	* fixed a bug where temporary files were not deleted (thanks to Tibor
+	  Biczo for pointing this out)
+	* added directory reloading after saving a file; only implemented
+	  for DOS and .D64; can't save to other filesystems anyway ;-)
+	* some small compile fixes for newer gcc versions (tested under
+	  linux with egcs 1.0.3; may work for gcc 2.8 too :)
+	* added a small patch (file "patch.tv") for compiling tvision-0.6
+	  (again linux with egcs 1.0.3; for DOS I still use gcc 2.7.2.1)
+-------------------------------------------------------------------------------
+V0.04pl5:
+	* LOAD"*",8 now loads the highlighted file
+	* changed directory loading again:
+	  - LOAD"$X",8 and LOAD"$X*",8 behave like on the real floppy now
+	  - implicit changing directories is still possible but needs
+	    two '$' to distinguish from original directory loading
+	    (e.g. LOAD"$$X",8 changes into directory X and loads the
+	    content, LOAD"$$..",8 goes up one level) [I'm quite open for
+	    better ideas :-]
+	* disabled option -mhz when not using the timestamp counter, added
+	  option -speed that should be used in this case
+	* changed calibration loop when using timestamp counter to use
+	  timer irq instead of sleep(); it's much faster now
+	* added support for the XE1541 cable; new port and cable detection
+	  code (kindly donated by Wolfgang Moser again, thanks)
+	* NOTE: detecting the XE1541 cable only works if the C64 is
+	  switched on!
+	* commandline parsing didn't recognize missing arguments if an
+	  option that needs arguments was the last one, fixed
+	* added option -cable to specify the cable type; it has to be
+	  used together with -lpt when the detection of a XE1541 cable
+	  failed (because the default is X1541); this option has no effect
+	  when a detected cable is used
+	* removed the IECINFO program from the binary distribution
+
+-------------------------------------------------------------------------------
+V0.04pl4:
+	* support for .ZIP files with internal directories
+	* new timing code that allows the emulator to run on non pentium
+	  machines again (currently only tested on my 486DX4/100 but may
+	  even run on slower machines)
+	* added a directory tree viewer 'cause I got lost on my harddisk
+	  without it ;-)
+	* changing directory is now possible from the c64 side again; you
+	  can go into directory <dir> with LOAD"$<dir>",8
+	* bugfix for LOAD"X",8 with X being a directory; does not crash
+	  anymore but goes into directory X and sends the listing
+
+-------------------------------------------------------------------------------
+V0.04pl3:
+	* new commandline switch:
+		-dir directory
+	  this tells the emulator to go to this directory at startup
+	  (e.g. -dir C:\TMP\DATA\DISKS.ZIP\DISK1.D64 and yes, this
+	  disks.zip is a ZIP-archive!)
+	  for now dos pathnames _must_ be given in upper case :-(
+	* limited and untested support for reading disk sectors with
+		10 OPEN15,8,15
+		20 OPEN2,8,2,"#"
+		30 PRINT#15,"U1:2 0 18 0"
+		   ...
+	* for all non disk image formats there is now a directory track
+	  emulation available that should allow c64 programs to read the
+	  directory directly via sector read starting at 18/1
+	* added a sector viewer for .d64 disk images (and the directory
+	  sector emulation)
+	* started to implement save support, for now it works only when
+	  saving directly to a DOS file or to an attached .d64 disk image
+	* command channel support improved, it's now possible to read
+	  the floppy error channel with:
+		10 OPEN1,8,15
+		20 GET#1,A$
+		30 PRINTA$;
+		40 GOTO20
+	* a new program called IECINFO is now available, this allows
+	  to display the protocol between C64 and a real floppy;
+	  it's mainly there for debugging but it may help if the
+	  emulator does not work
+
+-------------------------------------------------------------------------------
+V0.04pl2:
+	* directory listing are sorted now
+	* fixed _lots_ of memory leaks and some other memory related bugs
+	* thanks go to Armin Biere for his really useful ccmalloc V0.2
+	  that saved much time when searching for memory leaks
+
+-------------------------------------------------------------------------------
+V0.04pl1:
+	* added commandline switches:
+		-lpt 1..4
+		-mhz 33..1000 :-)
+	  to override the automagically probed values
+	* fixed the debug output stream, it is now implemented as showed in
+	  the info file for libio (part of glib++), reading manuals is
+	  sometimes really useful ;-)
+          
+-------------------------------------------------------------------------------
+V0.04:
+	* like V0.03pl4 this is a pentium version only!
+	* around 90 percent rewritten
+	* now using C++, compiles with DJGPP/ GNU gcc
+	* unlimited recursive file read operations (well, limited by harddisk
+          space)
+	* it's possible to look into gzipped files or achives created by
+	  PkZip (needs unzip386.exe), Arj and Lha
+	* incomplete ZipCode support (works only if the files are directly
+	  stored on disk)
+	* added a simple user interface (based on Robert H”hnes Unix/DJGPP
+	  port of Borland Turbo Vision), mouse support is a bit limited but
+          it works great with the keyboard ;-)
+	* added parallel port detection code provided by Wolfgang Moser
+
+-------------------------------------------------------------------------------
+V0.03pl4:
+	* special release for computers with fast processor (pentium and
+	  above)
+		- uses model specific register for timing (time stamp counter)
+		- may hang if an older EMM386 is installed (because the
+		  EMM386 must emulate the rdmsr instruction!)
+	* works on my new AMD-K6 and should run on Intel pentium and
+	  pentium pro, may run on Cyrix processors
+-------------------------------------------------------------------------------
+V0.03pl3:
+	* added some .T64 magic strings; recognized are now:
+		- "C64 tape file"
+		- "C64 tape image file"
+		- "C64S tape file"
+		- "C64S tape image file"
+-------------------------------------------------------------------------------
+V0.03pl2:
+	* changed timing functions again, now it works on a DECstation 300
+	  (which is a _really_ slow 386sx/16)
+	* added -dump switch that enables screen dump on exit (saves into
+	  'screen.txt')
+	* commented out the waiting for ATN line zero on close commands again
+	  (I have no idea what's the reason for this timeout errors)
+-------------------------------------------------------------------------------
+V0.03pl1:
+	* fixed for use with monochrome displays
+	* fixed port reading (waits till two sequential reads give the
+	  same value)
+	* optimized timing, now it runs even on my old 386sx/25 ;-)
+	* added a screensaver
+	* rudimentary command channel support, this is very unstable
+	  but it allows directory listing with my Action Replay Cardridge
+	  (if you have such a cardridge too, disable the floppy speeder
+	  with the 'OFF' command and you can load files with the function
+	  keys)
+	* added int 0x24 handler to get rid of those annoying dos messages
+	  if a device is not ready (i.e. A: without a floppy)
+
+-------------------------------------------------------------------------------
+V0.03:
+        * added loader for LYNX archives (.LNX)
+        * not very much tested (lacking different types of archives)
+
+-------------------------------------------------------------------------------
+V0.02:
+        * completely rewrote the protocol handling routines
+          (after checking the 1541 ROM listing)
+        * timeout for all routines implemented, so no reset button
+          needed anymore
+        * saving disabled
+        * 1.5 times faster than the real floppy
+          loading 197 blocks takes 87 seconds instead of 132 seconds
+        * can be used together with a real floppy
+          (i.e. real floppy as device 8 and emulator as 9 to 11)
+
+-------------------------------------------------------------------------------
+V0.01:
+        * first attempt to emulate the c64 serial protocol for
+          use in a floppy emulator
+        * lots of timing problems
+        * need to press the reset button after protocol errors :-(
+        * loaders for
+          - filesystem
+          - tape images (.T64)
+          - disk images (.D64)
+
+-------------------------------------------------------------------------------
+
+--
+(c) Torsten Paul
+paul@os.inf.tu-dresden.de

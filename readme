@@ -1,0 +1,178 @@
+-------------------------------------------------------------------------------
+$Id: readme,v 1.2 1998/10/26 03:02:47 tp Exp $
+-------------------------------------------------------------------------------
+                     __     ______   _ ____  _  _   _ 
+                     \ \   / / ___| / | ___|| || | / |
+                      \ \ / / |     | |___ \| || |_| |
+                       \ V /| |___  | |___) |__   _| |
+                        \_/  \____| |_|____/   |_| |_|
+                    ===================================
+
+                           VC 1541 Emulator V0.04
+
+                      Copyright (c) 1997 Torsten Paul
+			   Lommatzscher Str. 26
+			      01139 Dresden
+                        paul@os.inf.tu-dresden.de
+			   All Rights Reserved
+
+-------------------------------------------------------------------------------
+				  README
+-------------------------------------------------------------------------------
+0. Contents
+
+   1. COPYRIGHT
+   2. What does this emulator emulate?
+   3. What does it not emulate?
+   4. Running the emulator
+   5. Accessing emulated disk drives
+   6. The cable
+   7. Credits
+
+-------------------------------------------------------------------------------
+1. COPYRIGHT
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+-------------------------------------------------------------------------------
+2. What does this emulator emulate?
+
+   This program is intended to emulate the serial protocol that is used
+   for the communication between a Commodore 64 computer and a VC 1541
+   Disk Drive (currently only one device).
+   That means you can transfer data to and from the C64 without a special
+   program on the C64.
+   Saving files is only partially supported (on .D64 images and the DOS
+   filesystem) and may not work as expected in any case.
+
+-------------------------------------------------------------------------------
+3. What does it not emulate?
+
+   Nothing of the hardware is emulated by this program. Because of this
+   it's not possible to support any type of fastloader.
+   Although direct disk access could be emulated, it is not implemented.
+
+-------------------------------------------------------------------------------
+4. Running the emulator
+
+   The emulator tries to detect the serial cable automagicaly. If this
+   fails you can specify the used parallel port by adding the -lpt x option
+   with x being the port number from 1 to 4.
+   If you don't like the long startup delay for probing the processor
+   speed you can give it on the commandline too (e.g. for a Pentium 200
+   processor you can say -mhz 200).
+   To select the directory the emulator starts in you can specify the
+   -dir directory option (e.g. to start in E:\TEST\DATA say -d E:\TEST\DATA).
+   Currently the dos directory names _must_ be uppercase, sorry.
+
+   Available command line options:
+
+	-h        show this help
+	-dev      set device number
+	-dir      set startup directory
+	-lpt      set printer port
+	-cable    force cable type (X1541 or XE1541)
+	-mhz      set processor speed to x MHz
+	-speed    set processor speed index
+	-notsc    disable usage of the pentium timestamp counter (TSC)
+	-noabout  suppress display of about dialog
+	-guionly  run only the user interface (this is for debugging)
+
+-------------------------------------------------------------------------------
+5. Accessing emulated disk drives
+
+   If you have the emulator running on PC you can load the current directory
+   as usual with:
+
+        load"$",8
+
+   This gives the directory of the device which can be a directory on the
+   harddisk, a disk-image (.D64), a tape-image (.T64) or an archive created
+   by the LYNX archiver (.LNX).
+   Loading works as usual too:
+
+        load"filename",8
+
+   To change the directory you can use the cursor keys:
+
+	- select with <CURSOR UP>/ <CURSOR DOWN>
+	- change into selected directory with <CURSOR RIGHT>
+	- change to higher level directory with <CURSOR LEFT>
+
+   Using the mouse is also possible (if a mouse driver is present, of
+   cause :-) but if there is no ".." directory displayed as for .D64 or
+   .T64 images you have to use the cursor keys to go back to higher
+   level directories.
+
+-------------------------------------------------------------------------------
+6. The cable
+
+   The program requires the following adapter cable to be connected between
+   your parallel printer port (LPT1/LPT2/LPT3) and a commodore disk drive.
+   This cable is also known as X1541 cable because it was used the first
+   time by a program with this name.
+   Nowadays it is used by many programs.
+
+
+        IBM Lpt port Female:         CBM IEEE serial port Female:
+           ÚÄÄÄÄÄ¿                          ÉÍÍÍÍ_ÍÍÍÍ»
+   StrobeÄÄÅÄ1ş  ÀÄÄÄ¿                    ÉÍ¼         ÈÍ»  _____
+           ³      ş14ÅÄAutoFeed     DataÄÄ×ÄÄş5     1şÄÄ×ÄÄSrqIn  _____
+   (Data 0)³ 2şÄ¿    ³                    º     6şÄÄÄÄÄÄ×ÄÄÄÄÄÄÄÄÄReset
+           ³    ÀÄş15³(Error)      ClockÄÄ×ÄÄş4     2şÄÄ×ÄÄ¿Ground
+           ³ 3ş      ³ ____               ÈÍ»   3ş    ÉÍ¼ ÄÁÄ
+           ³      ş16ÅÄInit                 ÈÍÍÍÍØÍÍÍÍ¼
+           ³ 4ş      ³                       AtnÄÙ
+           ³      ş17ÅÄSelectIn ÚÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+           ³ 5ş      ³          ³ C64signal ³  IBMsignal       Lpt port + 2 ³
+           ³     Úş18³          ³           ³                               ³
+           ³ 6ş  ÃÄÄÄÅÄÄ¿Ground ³  2 Ground ³ 18..25 Ground                 ³
+           ³     Ãş19³ ÄÁÄ      ³  3 Atn    ³      1 Strobe      bit 0      ³
+           ³ 7ş  ³   ³          ³  4 Clock  ³     14 AutoFeed    bit 1      ³
+           ÷÷÷÷÷÷÷÷÷÷÷          ³  5 Data   ³     17 SelectIn    bit 3      ³
+           ³     Àş25³          ³  6 Reset  ³     16 Init        bit 2      ³
+           ³13ş  ÚÄÄÄÙ          ÀÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+           ÀÄÄÄÄÄÙ
+
+   As of version 0.04pl5 a new type of cable is supported: XE1541.
+   For further information about it see the file x1541.txt (that originally
+   comes with the Star Commander as the XE1541 is designed for it)
+
+-------------------------------------------------------------------------------
+7. Credits
+
+   Wolfgang Moser aka Womo (ia122@advs2.gm.fh-koeln.de)
+	- XE1541 cable,
+	- Parallel Port detection code
+   Nicolas Welte
+	- XE1541 cable
+   Kov cs Bal zs aka Joe Forster/STA (sta@ludens.elte.hu)
+	- Parallel Port detection code
+	(Check out for his Star Commander, the final solution to handle
+        disk/tape images for C64 emulators. http://ludens.elte.hu/~sta/sc.html)
+   Leopoldo Ghielmetti (GHIELMET@eldi.epfl.ch)
+	- X1541 cable and the X1541 transfer program
+   Peter Schepers (schepers@ist.uwaterloo.ca)
+        - Lots of information about the various c64 file formats is
+	  provided in his 'Emulator Formats' documentation
+	(if you want to convert _any_ c64 related format try his program
+        64COPY.)
+
+-------------------------------------------------------------------------------
+Have fun!
+
+--
+Torsten Paul
+paul@os.inf.tu-dresden.de
